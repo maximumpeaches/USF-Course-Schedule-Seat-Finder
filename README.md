@@ -15,7 +15,7 @@ To set up my Gmail account to work with this script I had to turn on 2-step veri
 and then create an App Password for the sender email using [these directions](https://support.google.com/accounts/answer/185834#ASPs "Google's instructions to set up an App Password").
 then run `python read_app_password.py` and enter the App Password.
 
-To run the script periodically, run [periodically.sh](periodically.sh) with the command `bash periodically.sh`. You can modify the period of time the script waits to run again by editing [periodically.sh](periodically.sh). By default it runs every 70 seconds.
+To run the script periodically, run [periodically.sh](periodically.sh) with the command `bash periodically.sh`. By default it runs every 70 seconds.
 
 # Support
 Please email me at maxwell.pietsch@gmail.com with any issues you're having, or send me a message through GitHub.
