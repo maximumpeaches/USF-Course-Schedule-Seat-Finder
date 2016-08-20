@@ -18,8 +18,10 @@ def create_courses_of_interest():
 	ardunio = 'Control of Mobile Robots'
 	verification = 'Intro to Comp-Aid Verification'
 	testing = 'Software Testing'
-	nonexistent = 'This course cant exist'
-	courses_of_interest = [advanced_databases, nonexistent, data_mining]
+	courses_of_interest = []
+	courses_of_interest.append(data_mining)
+	courses_of_interest.append(arduino)
+	courses_of_interest.append(advanced_databases)
 	return courses_of_interest
 
 def start_from_first_page(driver, definitely_started_from_first_page=False):
@@ -85,4 +87,5 @@ if __name__ == "__main__":
 		app_password = p.readline().strip()
 	for course in courses_of_interest:
 		send_email_if_available(course, sender, app_password, receiver, driver)
+	driver.close()
 
