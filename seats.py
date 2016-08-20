@@ -13,15 +13,11 @@ sender = 'makeswell@gmail.com'
 receiver = 'maxwell.pietsch@gmail.com'
 
 def create_courses_of_interest():
-	data_mining = 'Data Mining'
-	advanced_databases = 'Advanced Databases'
-	ardunio = 'Control of Mobile Robots'
-	verification = 'Intro to Comp-Aid Verification'
-	testing = 'Software Testing'
 	courses_of_interest = []
-	courses_of_interest.append(data_mining)
-	courses_of_interest.append(arduino)
-	courses_of_interest.append(advanced_databases)
+	with open('courses_of_interest.txt', 'r') as f:
+		for line in f:
+			if line != '':
+				courses_of_interest.append(line)
 	return courses_of_interest
 
 def start_from_first_page(driver, definitely_started_from_first_page=False):
