@@ -15,9 +15,15 @@ receiver = 'maxwell.pietsch@gmail.com'
 def create_courses_of_interest():
 	courses_of_interest = []
 	with open('courses_of_interest.txt', 'r') as f:
+		just_read_course_name = False
 		for line in f:
-			if line != '':
-				courses_of_interest.append(line)
+			if line[0] != '#':
+				if just_read_course_name == False:
+					course = line.strip()
+					just_read_course_name = True
+				else:
+					section_num = line.strip()
+					courses_of_interest.append((course,section_num))
 	return courses_of_interest
 
 def start_from_first_page(driver, definitely_started_from_first_page=False):
@@ -30,26 +36,27 @@ def start_from_first_page(driver, definitely_started_from_first_page=False):
 			print("Should be at the first page now.")
 
 
-def seats_available(course_title, driver, definitely_started_from_first_page_for_this_course=False):	
+def seats_available(course_title, section_num, driver, definitely_started_from_first_page_for_this_course=False):	
 	if not definitely_started_from_first_page_for_this_course:
 		start_from_first_page(driver)
 		definitely_started_from_first_page_for_this_course = True
 	try:
-		i = int(driver.find_element_by_xpath(u'//td[contains(text(), "' + course_title + '")]/following-sibling::td[4]').text)
-		print(str(i) + ' seats available in ' + course_title)
-		return i
+		seatz = int(driver.find_element_by_xpath(u'//td[contains(text(), "' + course_title + '")]/preceding-sibling::td[contains(text(), "' + section_num + '")][1]/following-sibling::td[5]').text)
+		print(str(seatz) + ' seats available in ' + course_title + ' section #' + section_num)
+		return seatz
 	except NoSuchElementException:
 		try:
 			driver.find_element_by_xpath("//a[@title='Next page of results']").click()
 		except NoSuchElementException:
-			print("Reached the last page.")
+			print("Reached the last page without finding the course.")
 		else:
-			seats_available(course_title, driver, definitely_started_from_first_page_for_this_course)
+			seats = seats_available(course_title, section_num, driver, definitely_started_from_first_page_for_this_course)
+			return seats
 
-def send_email_if_available(course, sender, password, receiver, driver):
-	seats = seats_available(course, driver)
+def send_email_if_available(course, section_num, sender, password, receiver, driver):
+	seats = seats_available(course, section_num, driver)
 	if (seats > 0):
-		msg_text = str(seats) + ' seat is available in ' + course
+		msg_text = str(seats) + ' seat(s) is available in ' + course + ' with section #' + section_num
 		print(msg_text)
 		print('Sending email from ' + sender + ' to ' + receiver)
 		msg = MIMEText(msg_text)
@@ -81,7 +88,7 @@ if __name__ == "__main__":
 	with open('appp.txt') as p:
 		p.readline() # do away with the comment line
 		app_password = p.readline().strip()
-	for course in courses_of_interest:
-		send_email_if_available(course, sender, app_password, receiver, driver)
+	for course, section_num in courses_of_interest:
+		send_email_if_available(course, section_num, sender, app_password, receiver, driver)
 	driver.close()
 

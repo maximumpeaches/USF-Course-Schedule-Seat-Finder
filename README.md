@@ -2,12 +2,14 @@
 This project is intended to periodically check USF's course schedule search for open seats in a course the user would like to enroll in, and email him/her notifications of openings.
 
 # Usage instructions
-This project depends on selenium and python. You can install selenium using [these directions](http://selenium-python.readthedocs.io/installation.html).
+This project depends on Selenium and Firefox. You can install selenium using [these directions](http://selenium-python.readthedocs.io/installation.html). I've tested this using Python 2.7 and Ubuntu 16.
 
-To change which courses you get notifications for, enter the name of the courses one line at a time in [courses_of_interest.txt](courses_of_interest.txt). So for instance courses_of_interest.txt will look something like,
+To change which courses you get notifications for, enter the name of the courses one line at a time in [courses_of_interest.txt](courses_of_interest.txt) followed by the section number. So for instance courses_of_interest.txt will look something like,
 ```
 Web Apps Design
+001
 Software Testing
+002
 ```
 You'll need to edit sender and receiver in [seats.py](seats.py) with the email addresses you'd like to send the from and receive the email at, respectively. Sender and receiver can be the same email, but I found it helpful to make them two separate emails so that the message would be marked as unread upon arrival in my inbox, and I would recieve a notification when receiving it. The sender I made is just a dummy email account set up for this project, and the receiver is the actual email I use.
 

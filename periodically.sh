@@ -3,5 +3,5 @@
 while true
 do
 	python seats.py
-	sleep 70
+	sleep 77
 done
