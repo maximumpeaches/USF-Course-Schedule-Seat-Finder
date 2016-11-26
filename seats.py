@@ -24,10 +24,11 @@ def create_courses_of_interest():
 				else:
 					section_num = line.strip()
 					courses_of_interest.append((course,section_num))
+					just_read_course_name = False
 	return courses_of_interest
 
 def start_from_first_page(driver, definitely_started_from_first_page=False):
-	#if we're not sure if we started from the first page or not, we'll keep clicking on the first page button until we can no longer find the Previous button. at this point we'll assume we're at the first page and call the function again with definitely_started_from_the_first_page equal to True.
+	#if we're not sure if we started from the first page or not, we'll keep clicking on the first page button until we can no longer find the Previous button. we'll get an exception if selenium can't find a Previous button and assume we're at the first page.
 	if not definitely_started_from_first_page:
 		try:
 			driver.find_element_by_xpath("//a[@title='Previous page of results']").click()
@@ -71,8 +72,8 @@ def send_email_if_available(course, section_num, sender, password, receiver, dri
 		s.quit()
 
 def submit_search_open_results():
-	driver = webdriver.Firefox()
-	driver.get("http://www.registrar.usf.edu/ssearch/search.php")
+	driver = webdriver.Chrome()
+	driver.get("https://www.registrar.usf.edu/ssearch/search.php")
 	driver.find_element_by_xpath(u'//option[contains(text(), "Tampa")]').click()
 	driver.find_element_by_xpath(u'//option[contains(text(), "Engineering Computer Science")]').click()
 	driver.find_element_by_xpath(u'//option[contains(text(), "ALL")]').click()
